@@ -1,5 +1,5 @@
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
-import { InvalidRoleError } from "./InvalidRoleError";
+import { InvalidRoleError } from "./errors/InvalidRoleError";
 
 export class RoleId {
   private readonly id: string;

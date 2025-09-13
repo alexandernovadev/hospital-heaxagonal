@@ -1,5 +1,5 @@
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
-import { InvalidPermissionError } from "./InvalidPermissionError";
+import { InvalidPermissionError } from "./errors/InvalidPermissionError";
 
 export class PermissionId {
   private readonly id: string;
