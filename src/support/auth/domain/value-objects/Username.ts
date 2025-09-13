@@ -1,4 +1,4 @@
-import { InvalidUsernameError } from "./errors/InvalidUsernameError";
+import { InvalidUsernameError } from "../errors/InvalidUsernameError";
 
 export class Username {
   private readonly username: string;

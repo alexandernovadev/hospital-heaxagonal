@@ -1,4 +1,4 @@
-import { InvalidRefreshTokenError } from "./errors/InvalidRefreshTokenError";
+import { InvalidRefreshTokenError } from "../errors/InvalidRefreshTokenError";
 
 export class RefreshToken {
   private readonly token: string;

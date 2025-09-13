@@ -1,7 +1,8 @@
-import { Email } from "./Email";
-import { PasswordHash } from "./PasswordHash";
-import { UserID } from "./UserId";
-import { Username } from "./Username";
+import { Email } from "../value-objects/Email";
+import { PasswordHash } from "../value-objects/PasswordHash";
+import { UserID } from "../value-objects/UserId";
+import { Username } from "../value-objects/Username";
+import { InvalidUserError } from "../errors/InvalidUserError";
 
 export class User {
   private readonly id: UserID;

@@ -1,4 +1,4 @@
-import { InvalidJWTTokenError } from "./errors/InvalidJWTTokenError";
+import { InvalidJWTTokenError } from "../errors/InvalidJWTTokenError";
 
 export class JWTToken {
   private readonly token: string;

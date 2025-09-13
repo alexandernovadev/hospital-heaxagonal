@@ -1,5 +1,5 @@
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
-import { InvalidUserError } from "./errors/InvalidUserError";
+import { InvalidUserError } from "../errors/InvalidUserError";
 
 export class UserID {
   private readonly id: string;
