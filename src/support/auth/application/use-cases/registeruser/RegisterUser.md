@@ -41,6 +41,10 @@ sequenceDiagram
     end
 
     RegisterUser->>IPasswordService: hashPassword(command.password)
+    alt Password Hashing Failed
+        IPasswordService-->>RegisterUser: Throws PasswordHashingFailedError
+        RegisterUser-->>Client: Relays Application Error
+    end
     IPasswordService-->>RegisterUser: passwordHash
 
     RegisterUser->>UserEntity: createNewId()
