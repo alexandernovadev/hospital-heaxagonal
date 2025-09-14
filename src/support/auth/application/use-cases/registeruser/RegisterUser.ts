@@ -1,17 +1,18 @@
-import { UserID } from "../../domain/value-objects/UserId";
-import { Username } from "../../domain/value-objects/Username";
-import { Email } from "../../domain/value-objects/Email";
-import { PasswordHash } from "../../domain/value-objects/PasswordHash";
-import { User } from "../../domain/entities/User";
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { IPasswordService } from "../ports/IPasswordService";
-import { IEventPublisher } from "../ports/IEventPublisher";
-import { RegisterUserCommand } from "../dtos/RegisterUserCommand";
-import { UserRegisteredResponse } from "../dtos/UserRegisteredResponse";
-import { UserRegisteredEvent } from "../../domain/events/UserRegisteredEvent";
-import { WeakPasswordError } from "../errors/WeakPasswordError";
-import { DuplicateUsernameError } from "../errors/DuplicateUsernameError";
-import { DuplicateEmailError } from "../errors/DuplicateEmailError";
+import { UserID } from "../../../domain/value-objects/UserId";
+import { Username } from "../../../domain/value-objects/Username";
+import { Email } from "../../../domain/value-objects/Email";
+import { PasswordHash } from "../../../domain/value-objects/PasswordHash";
+import { User } from "../../../domain/entities/User";
+import { IUserRepository } from "../../../domain/repositories/IUserRepository";
+import { IPasswordService } from "../../ports/IPasswordService";
+import { IEventPublisher } from "../../ports/IEventPublisher";
+import { RegisterUserCommand } from "../../dtos/RegisterUserCommand";
+import { UserRegisteredResponse } from "../../dtos/UserRegisteredResponse";
+import { UserRegisteredEvent } from "../../../domain/events/UserRegisteredEvent";
+import { WeakPasswordError } from "../../errors/WeakPasswordError";
+import { DuplicateUsernameError } from "../../errors/DuplicateUsernameError";
+import { DuplicateEmailError } from "../../errors/DuplicateEmailError";
+import { PasswordHashingFailedError } from "../../../../../shared/application/errors/PasswordHashingFailedError";
 
 export class RegisterUser {
   constructor(
@@ -53,9 +54,14 @@ export class RegisterUser {
     }
 
     // 4. Hashear la contraseña (delegado al servicio de infraestructura)
-    const passwordHash = await this.passwordService.hashPassword(
-      command.password
-    );
+    let passwordHash: PasswordHash;
+    try {
+      passwordHash = await this.passwordService.hashPassword(
+        command.password
+      );
+    } catch (error) {
+      throw new PasswordHashingFailedError("Failed to hash password.");
+    }
 
     // 5. Crear la Entidad de Dominio
     const userId = UserID.createNew();
