@@ -21,8 +21,18 @@ src/
 ├── core/                          # Dominio Principal (Core Domain)
 ├── support/                       # Subdominios de Soporte
 ├── shared/                        # Kernel Compartido
-└── apps/                          # Puntos de Entrada
+└── apps/                          # Puertos Primarios (Driving Adapters)
 ```
+
+---
+
+## 🤝 Kernel Compartido (Shared Kernel)
+
+El Shared Kernel es un conjunto de modelos de dominio (Value Objects, interfaces de eventos, clases base de errores) que son explícitamente compartidos y acordados por múltiples Contextos Delimitados. Su propósito es asegurar consistencia en conceptos fundamentales y reducir la duplicación de código universal, evitando el acoplamiento excesivo entre contextos. Es una parte estable y transversal del dominio.
+
+### Contenido Actual del Shared Kernel:
+- `DomainError`: Clase base para todos los errores lanzados dentro de los límites del dominio.
+- `DomainEvent`: Clase base para todos los eventos de dominio, encapsulando metadatos como `eventId` y `occurredOn`.
 
 ---
 
@@ -44,9 +54,9 @@ src/
 - **Lenguaje Ubicuo**: Diagnóstico, Tratamiento, Historial
 
 ### 4. **Gestión de Recursos (Resource Management)**
-- **Responsabilidad**: Administración de habitaciones, camas y personal
+- **Responsabilidad**: Administración de habitaciones, camas y personal médico (doctores, enfermeras). Aunque `Doctor` y `Nurse` son roles centrales, sus entidades y reglas de asignación se gestionan en este contexto.
 - **Agregados Principales**: `Room`, `Bed`, `Doctor`, `Nurse`
-- **Lenguaje Ubicuo**: Habitación, Cama, Turno, Especialidad
+- **Lenguaje Ubicuo**: Habitación, Cama, Turno, Especialidad, Asignación de Personal
 
 ### 5. **Facturación (Billing)**
 - **Responsabilidad**: Gestión de facturas y pagos
@@ -54,37 +64,39 @@ src/
 - **Lenguaje Ubicuo**: Factura, Pago, Concepto
 
 ### 6. **Autenticación y Autorización (Auth)**
-- **Responsabilidad**: Gestión de usuarios y permisos
+- **Responsabilidad**: Gestión de usuarios, roles y permisos en el sistema.
 - **Agregados Principales**: `User`, `Role`, `Permission`
-- **Lenguaje Ubicuo**: Usuario, Rol, Permiso, Autenticación
+- **Lenguaje Ubicuo**: Usuario, Rol, Permiso, Autenticación, Autorización
 
 ---
 
 ## 🧩 Agregados y Entidades
 
+En DDD, un **Agregado** es un clúster de entidades y Value Objects que se tratan como una unidad para la consistencia transaccional. Hay una **Raíz de Agregado** que es la única entidad dentro del agregado que puede ser referenciada desde fuera del mismo, y que garantiza la consistencia de todo el agregado.
+
 ### Core Domain
-| Entidad | Contexto | Responsabilidad |
-|---------|----------|-----------------|
-| `Patient` | Todos | Representa a un paciente del sistema |
-| `Appointment` | Citas | Gestiona las citas programadas |
-| `EmergencyEpisode` | Urgencias | Maneja episodios de emergencia |
-| `MedicalRecord` | Historia Clínica | Contiene el historial médico completo |
+| Entidad (Raíz de Agregado) | Contexto | Responsabilidad |
+|--------------------------|----------|-----------------|
+| `Patient`                  | Todos    | Representa a un paciente del sistema. Es una entidad central para la mayoría de los contextos. |
+| `Appointment`              | Citas    | Gestiona las citas programadas. |
+| `EmergencyEpisode`         | Urgencias | Maneja episodios de emergencia. |
+| `MedicalRecord`            | Historia Clínica | Contiene el historial médico completo. |
 
 ### Support Subdomains
-| Entidad | Contexto | Responsabilidad |
-|---------|----------|-----------------|
-| `Doctor` | Recursos | Personal médico con especialidades |
-| `Nurse` | Recursos | Personal de enfermería |
-| `Room` | Recursos | Habitaciones del hospital |
-| `Bed` | Recursos | Camas asignables |
-| `Invoice` | Facturación | Facturas y cargos |
+| Entidad (Raíz de Agregado) | Contexto | Responsabilidad |
+|--------------------------|----------|-----------------|
+| `Doctor`                   | Recursos | Personal médico con especialidades y reglas de asignación. |
+| `Nurse`                    | Recursos | Personal de enfermería con habilidades y disponibilidad. |
+| `Room`                     | Recursos | Habitaciones del hospital con estado y capacidad. |
+| `Bed`                      | Recursos | Camas asignables a pacientes, con estado. |
+| `Invoice`                  | Facturación | Facturas y cargos generados, con su estado de pago. |
 
 ### Authentication
-| Entidad | Contexto | Responsabilidad |
-|---------|----------|-----------------|
-| `User` | Auth | Usuarios del sistema |
-| `Role` | Auth | Roles de permisos |
-| `Permission` | Auth | Permisos específicos |
+| Entidad (Raíz de Agregado) | Contexto | Responsabilidad |
+|--------------------------|----------|-----------------|
+| `User`                     | Auth     | Usuarios del sistema, con credenciales y vínculos a roles/permisos. |
+| `Role`                     | Auth     | Definiciones de roles y sus permisos asociados. |
+| `Permission`               | Auth     | Definiciones de permisos granulares. |
 
 ---
 
