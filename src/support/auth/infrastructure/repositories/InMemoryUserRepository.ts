@@ -26,7 +26,13 @@ export class InMemoryUserRepository implements IUserRepository {
   }
 
   async save(user: User): Promise<void> {
-    this.users.push(user);
+    // ⚙️ Comentario: Mejora en save() para manejar creación y actualización por ID
+    const existingIndex = this.users.findIndex((u) => u.getId().equals(user.getId()));
+    if (existingIndex > -1) {
+      this.users[existingIndex] = user; // Actualiza el usuario existente
+    } else {
+      this.users.push(user); // Añade un nuevo usuario
+    }
   }
 
   async delete(id: UserID): Promise<void> {
