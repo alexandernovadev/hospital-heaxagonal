@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { RegisterUser } from "../../application/use-cases/registeruser/RegisterUser.js";
-import { AuthenticateUser } from "../../application/use-cases/authenticateuser/AuthenticateUser.js";
-import { WeakPasswordError } from "../../application/errors/WeakPasswordError.js";
-import { DuplicateUsernameError } from "../../application/errors/DuplicateUsernameError.js";
-import { DuplicateEmailError } from "../../application/errors/DuplicateEmailError.js";
-import { PasswordHashingFailedError } from "../../../../shared/application/errors/PasswordHashingFailedError.js";
-import { InvalidCredentialsError } from "../../application/errors/InvalidCredentialsError.js";
-import { UserAccountLockedError } from "../../application/errors/UserAccountLockedError.js";
-import { TokenGenerationFailedError } from "../../application/errors/TokenGenerationFailedError.js";
-import { ApplicationError } from "../../../../shared/application/errors/ApplicationError.js";
+import { RegisterUser } from "../../application/use-cases/registeruser/RegisterUser";
+import { AuthenticateUser } from "../../application/use-cases/authenticateuser/AuthenticateUser";
+import { WeakPasswordError } from "../../application/errors/WeakPasswordError";
+import { DuplicateUsernameError } from "../../application/errors/DuplicateUsernameError";
+import { DuplicateEmailError } from "../../application/errors/DuplicateEmailError";
+import { PasswordHashingFailedError } from "../../../../shared/application/errors/PasswordHashingFailedError";
+import { InvalidCredentialsError } from "../../application/errors/InvalidCredentialsError";
+import { UserAccountLockedError } from "../../application/errors/UserAccountLockedError";
+import { TokenGenerationFailedError } from "../../application/errors/TokenGenerationFailedError";
+import { ApplicationError } from "../../../../shared/application/errors/ApplicationError";
 
 export class AuthController {
   public readonly router: Router;

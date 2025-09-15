@@ -1,14 +1,14 @@
 import express from "express";
 // ⚙️ Comentario: Importaciones de Implementaciones de Infraestructura
-import { BcryptPasswordService } from "./support/auth/infrastructure/services/BcryptPasswordService.js";
-import { JwtTokenService } from "./support/auth/infrastructure/services/JwtTokenService.js";
-import { InMemoryUserRepository } from "./support/auth/infrastructure/repositories/InMemoryUserRepository.js";
-import { InMemoryEventPublisher } from "./support/auth/infrastructure/event-publishers/InMemoryEventPublisher.js";
+import { BcryptPasswordService } from "./support/auth/infrastructure/services/BcryptPasswordService";
+import { JwtTokenService } from "./support/auth/infrastructure/services/JwtTokenService";
+import { InMemoryUserRepository } from "./support/auth/infrastructure/repositories/InMemoryUserRepository";
+import { InMemoryEventPublisher } from "./support/auth/infrastructure/event-publishers/InMemoryEventPublisher";
 // ⚙️ Comentario: Importaciones de Casos de Uso
-import { RegisterUser } from "./support/auth/application/use-cases/registeruser/RegisterUser.js";
-import { AuthenticateUser } from "./support/auth/application/use-cases/authenticateuser/AuthenticateUser.js";
+import { RegisterUser } from "./support/auth/application/use-cases/registeruser/RegisterUser";
+import { AuthenticateUser } from "./support/auth/application/use-cases/authenticateuser/AuthenticateUser";
 // ⚙️ Comentario: Importación del Controlador
-import { AuthController } from "./support/auth/infrastructure/controllers/AuthController.js";
+import { AuthController } from "./support/auth/infrastructure/controllers/AuthController";
 
 const app = express();
 const port = 3000;
