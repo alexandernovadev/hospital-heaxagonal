@@ -8,6 +8,11 @@ export class DateOfBirth {
   }
 
   public static create(value: Date): DateOfBirth {
+    // ⚠️ ¡Corrección aquí! Primero, verificar si el objeto Date es válido
+    if (isNaN(value.getTime())) {
+      throw new InvalidDateOfBirthError("Invalid date format provided.");
+    }
+
     if (value.getTime() > new Date().getTime()) {
       throw new InvalidDateOfBirthError("Date of birth cannot be in the future.");
     }
