@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant Client
     participant AuthenticateUser as AuthenticateUser (Use Case)
@@ -49,3 +50,4 @@ sequenceDiagram
     IEventPublisher-->>AuthenticateUser: Event Published
 
     AuthenticateUser-->>Client: AuthenticationResponse (userId, username, email, accessToken, refreshToken)
+```
