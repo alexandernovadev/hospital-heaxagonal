@@ -1,18 +1,18 @@
-import { BcryptPasswordService } from "./support/auth/infrastructure/services/BcryptPasswordService";
-import { JwtTokenService } from "./support/auth/infrastructure/services/JwtTokenService";
-import { InMemoryUserRepository } from "./support/auth/infrastructure/repositories/InMemoryUserRepository";
-import { InMemoryEventPublisher } from "./support/auth/infrastructure/event-publishers/InMemoryEventPublisher";
-import { RegisterUser } from "./support/auth/application/use-cases/registeruser/RegisterUser";
-import { AuthenticateUser } from "./support/auth/application/use-cases/authenticateuser/AuthenticateUser";
-import { AuthController } from "./support/auth/infrastructure/controllers/AuthController";
+import { BcryptPasswordService } from "../../support/auth/infrastructure/services/BcryptPasswordService";
+import { JwtTokenService } from "../../support/auth/infrastructure/services/JwtTokenService";
+import { InMemoryUserRepository } from "../../support/auth/infrastructure/repositories/InMemoryUserRepository";
+import { InMemoryEventPublisher } from "../../support/auth/infrastructure/event-publishers/InMemoryEventPublisher";
+import { RegisterUser } from "../../support/auth/application/use-cases/registeruser/RegisterUser";
+import { AuthenticateUser } from "../../support/auth/application/use-cases/authenticateuser/AuthenticateUser";
+import { AuthController } from "../../support/auth/infrastructure/controllers/AuthController";
 
 // ⚙️ Importaciones para Patient Context
-import { InMemoryPatientRepository } from "./core/patient/infrastructure/repositories/InMemoryPatientRepository";
-import { RegisterPatient } from "./core/patient/application/use-cases/registerpatient/RegisterPatient";
-import { PatientController } from "./core/patient/infrastructure/controllers/PatientController";
+import { InMemoryPatientRepository } from "../../core/patient/infrastructure/repositories/InMemoryPatientRepository";
+import { RegisterPatient } from "../../core/patient/application/use-cases/registerpatient/RegisterPatient";
+import { PatientController } from "../../core/patient/infrastructure/controllers/PatientController";
 
-// 🚀 Definición del ServiceContainer
-export const serviceContainer = (() => {
+const serviceContainer = (() => {
+  console.log("ServiceContainer initialized");
   // Auth Context
   const passwordService = new BcryptPasswordService();
   const tokenService = new JwtTokenService();
@@ -60,3 +60,7 @@ export const serviceContainer = (() => {
     },
   };
 })();
+
+export const authRouter = serviceContainer.auth.controllers.authController.router;
+export const patientRouter =
+  serviceContainer.patient.controllers.patientController.router;

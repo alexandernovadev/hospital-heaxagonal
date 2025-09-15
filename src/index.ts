@@ -1,5 +1,8 @@
 import express from "express";
-import { serviceContainer } from "./shared/infrastructure/ServiceContainer"; // 🚀 Importar el ServiceContainer
+import {
+  authRouter,
+  patientRouter,
+} from "./shared/infrastructure/ServiceContainer";
 
 const app = express();
 const port = 3000;
@@ -7,11 +10,13 @@ const port = 3000;
 app.use(express.json());
 
 // 🔄 Montar las rutas de los controladores desde el ServiceContainer
-app.use("/auth", serviceContainer.auth.controllers.authController.router);
-app.use("/patients", serviceContainer.patient.controllers.patientController.router);
+app.use("/auth", authRouter);
+app.use("/patients", patientRouter);
 
 app.get("/", (req, res) => {
-  res.send(`Hello World! The Auth and Patient modules are running and configured!`);
+  res.send(
+    `Hello World! The Auth and Patient modules are running and configured!`
+  );
 });
 
 app.listen(port, () => {
