@@ -10,21 +10,23 @@ export class PermissionName {
   public static create(name: string): PermissionName {
     const trimmedName = name.trim();
 
-    if (trimmedName === "") {
+    if (!trimmedName) {
       throw new InvalidPermissionNameError("Permission name cannot be empty.");
     }
 
-    if (trimmedName.length < 4 || trimmedName.length > 50) {
-      throw new InvalidPermissionNameError(
-        "Permission name must be between 4 and 50 characters."
-      );
+    if (trimmedName.length < 3) {
+      throw new InvalidPermissionNameError("Permission name must be at least 3 characters long.");
     }
 
-    // Reglas específicas: no permitir caracteres especiales, similar a RoleName
-    if (/[^a-zA-Z0-9\s-]/.test(trimmedName)) {
-      throw new InvalidPermissionNameError(
-        "Permission name must not include special characters (except hyphens and spaces)."
-      );
+    if (trimmedName.length > 50) {
+      throw new InvalidPermissionNameError("Permission name cannot be longer than 50 characters.");
+    }
+
+    // ⚙️ Comentario: Expresión regular para permitir solo letras y números. No espacios ni caracteres especiales.
+    const permissionNameRegex = /^[a-zA-Z0-9]+$/;
+
+    if (!permissionNameRegex.test(trimmedName)) {
+      throw new InvalidPermissionNameError("Permission name can only contain letters and numbers.");
     }
 
     return new PermissionName(trimmedName);
@@ -34,7 +36,7 @@ export class PermissionName {
     return this.value;
   }
 
-  public equals(other: PermissionName): boolean {
+  public equals(other: PermissionName | null | undefined): boolean {
     if (other === null || other === undefined) {
       return false;
     }

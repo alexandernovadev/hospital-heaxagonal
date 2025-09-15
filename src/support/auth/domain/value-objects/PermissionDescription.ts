@@ -20,11 +20,12 @@ export class PermissionDescription {
       );
     }
 
-    // Reglas específicas: permitir más flexibilidad que en el nombre, pero evitar ciertos caracteres de control
-    if (/[<>&]/.test(trimmedDescription)) {
-      throw new InvalidPermissionDescriptionError(
-        "Permission description must not include HTML/XML special characters (<, >, &)."
-      );
+    // ⚙️ Comentario: Expresión regular para permitir letras, números, espacios y la mayoría de los signos de puntuación.
+    // No debe contener los caracteres literales < o > para evitar la inyección de HTML/XML. El '&' se permite, ya que puede formar parte de entidades HTML válidas.
+    const htmlXmlRegex = /[<>]/;
+
+    if (htmlXmlRegex.test(trimmedDescription)) {
+      throw new InvalidPermissionDescriptionError("Permission description must not include literal HTML/XML characters (<, >).");
     }
 
     return new PermissionDescription(trimmedDescription);

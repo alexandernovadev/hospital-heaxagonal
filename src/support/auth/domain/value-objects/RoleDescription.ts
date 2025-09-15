@@ -20,12 +20,12 @@ export class RoleDescription {
       );
     }
 
-    // Reglas específicas del dominio hospitalario para descripciones
-    // Permitimos más flexibilidad que en el nombre, pero seguimos sin permitir ciertos caracteres de control
-    if (/[<>&]/.test(trimmedDescription)) { // Evitar HTML/XML básicos para seguridad y representación
-      throw new InvalidRoleDescriptionError(
-        "Role description must not include HTML/XML special characters (<, >, &)."
-      );
+    // ⚙️ Comentario: Expresión regular para permitir letras, números, espacios y la mayoría de los signos de puntuación.
+    // No debe contener los caracteres literales < o > para evitar la inyección de HTML/XML. El '&' se permite, ya que puede formar parte de entidades HTML válidas.
+    const htmlXmlRegex = /[<>]/;
+
+    if (htmlXmlRegex.test(trimmedDescription)) {
+      throw new InvalidRoleDescriptionError("Role description must not include literal HTML/XML characters (<, >).");
     }
 
     return new RoleDescription(trimmedDescription);

@@ -8,33 +8,32 @@ export class Email {
   }
 
   public static create(email: string): Email {
-    const trimmedEmail = email.trim();
+    const trimmedEmail = email.trim().toLowerCase();
 
-    if (trimmedEmail === "") {
+    if (!trimmedEmail) {
       throw new InvalidEmailError("Email address cannot be empty.");
     }
 
-    // Regex para validación de formato de correo electrónico básico
-    // Este regex es simple y cubre la mayoría de los casos, pero no todos los escenarios RFC.
-    // Para validaciones más estrictas en un entorno de producción, se podría usar una librería.
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    // ⚙️ Comentario: Una expresión regular más robusta para validación de email.
+    // Cubre la mayoría de los casos válidos, incluyendo subdominios y TLDs más largos.
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+
     if (!emailRegex.test(trimmedEmail)) {
       throw new InvalidEmailError("Invalid email address format.");
     }
 
-    if (trimmedEmail.length > 255) {
-      throw new InvalidEmailError("Email address is too long.");
+    if (trimmedEmail.length > 254) {
+      throw new InvalidEmailError("Email address cannot be longer than 254 characters.");
     }
 
-    // Normalizar a minúsculas para consistencia en la comparación
-    return new Email(trimmedEmail.toLowerCase());
+    return new Email(trimmedEmail);
   }
 
   public getValue(): string {
     return this.value;
   }
 
-  public equals(other: Email): boolean {
+  public equals(other: Email | null | undefined): boolean {
     if (other === null || other === undefined) {
       return false;
     }
